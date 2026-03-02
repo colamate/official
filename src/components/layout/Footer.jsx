@@ -1,57 +1,66 @@
 import React from 'react';
-import { Box, Typography, Container, Link } from '@mui/material';
+import { Layout, Typography, Space, Row, Col } from 'antd';
+import { Link } from 'react-router-dom';
 
-const Footer = () => {
+const { Footer } = Layout;
+const { Text } = Typography;
+
+const AppFooter = () => {
   return (
-    <Box 
-      component="footer" 
-      sx={{ 
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        color: 'white',
-        py: 4,
-        mt: 8,
+    <Footer
+      style={{
+        background: 'linear-gradient(135deg, #1677FF 0%, #597EF7 100%)',
+        color: '#fff',
+        padding: '60px 0',
       }}
     >
-      <Container maxWidth="lg">
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
-          <Typography variant="h6" sx={{ fontWeight: 700, mb: { xs: 2, md: 0 } }}>
-            ColaJS
-          </Typography>
-          
-          <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
-            <Link 
-              href="https://colajs.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              sx={{ 
-                color: 'white', 
-                textDecoration: 'none',
-                '&:hover': { color: '#FFD700' }
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+        <Row gutter={48} align="middle">
+          <Col xs={24} md={8}>
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: 700,
+                color: '#fff',
               }}
             >
-              官网
-            </Link>
-            <Link 
-              href="mailto:contact@colajs.com" 
-              sx={{ 
-                color: 'white', 
-                textDecoration: 'none',
-                '&:hover': { color: '#FFD700' }
-              }}
-            >
-              联系我们
-            </Link>
-          </Box>
-        </Box>
-        
-        <Box sx={{ mt: 4, borderTop: '1px solid rgba(255,255,255,0.2)', pt: 2 }}>
-          <Typography variant="body2" sx={{ textAlign: 'center', opacity: 0.8 }}>
+              ColaJS
+            </Text>
+          </Col>
+          <Col xs={24} md={16}>
+            <Space size={40} style={{ display: 'flex', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+              <Link
+                to="https://colajs.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: '#fff', textDecoration: 'none' }}
+              >
+                官网
+              </Link>
+              <Link
+                to="mailto:contact@colajs.com"
+                style={{ color: '#fff', textDecoration: 'none' }}
+              >
+                联系我们
+              </Link>
+            </Space>
+          </Col>
+        </Row>
+
+        <div
+          style={{
+            marginTop: 40,
+            paddingTop: 24,
+            borderTop: '1px solid rgba(255, 255, 255, 0.2)',
+          }}
+        >
+          <Text style={{ textAlign: 'center', opacity: 0.8, display: 'block' }}>
             © {new Date().getFullYear()} ColaJS. AI全栈开发 - AI一站式服务生态建设
-          </Typography>
-        </Box>
-      </Container>
-    </Box>
+          </Text>
+        </div>
+      </div>
+    </Footer>
   );
 };
 
-export default Footer;
+export default AppFooter;

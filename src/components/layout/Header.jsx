@@ -1,11 +1,12 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Box, Button, useTheme, useMediaQuery } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Menu, Typography, Button, Dropdown } from 'antd';
+import { Link, useLocation } from 'react-router-dom';
+import { MenuOutlined } from '@ant-design/icons';
+
+const { Text } = Typography;
 
 const Header = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  
+  const location = useLocation();
   const navItems = [
     { name: '首页', path: '/' },
     { name: '产品', path: '/products' },
@@ -14,74 +15,98 @@ const Header = () => {
     { name: 'Demo', path: '/demo' },
   ];
 
+  const mobileMenu = (
+    <Menu
+      selectedKeys={[location.pathname]}
+      mode="vertical"
+      items={navItems.map((item) => ({
+        key: item.path,
+        label: (
+          <Link to={item.path} style={{ color: '#333' }}>
+            {item.name}
+          </Link>
+        ),
+      }))}
+    />
+  );
+
   return (
-    <AppBar 
-      position="sticky" 
-      sx={{ 
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
-        backdropFilter: 'blur(10px)',
-        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+    <div
+      style={{
+        background: 'linear-gradient(135deg, #1677FF 0%, #597EF7 100%)',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000,
       }}
     >
-      <Toolbar sx={{ justifyContent: 'space-between', minHeight: '80px' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Typography 
-            variant="h6" 
-            component={Link} 
-            to="/"
-            sx={{ 
-              color: 'white', 
-              textDecoration: 'none', 
-              fontWeight: 700,
-              fontSize: '1.5rem',
-            }}
-          >
-            ColaJS
-          </Typography>
-        </Box>
-        
-        {!isMobile && (
-          <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 80 }}>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 24,
+                fontWeight: 700,
+                margin: 0,
+              }}
+            >
+              ColaJS
+            </Text>
+          </Link>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
             {navItems.map((item) => (
-              <Button
-                key={item.name}
-                component={Link}
+              <Link
+                key={item.path}
                 to={item.path}
-                sx={{ 
-                  color: 'white', 
-                  fontWeight: 600,
-                  fontSize: '1rem',
-                  '&:hover': {
-                    color: '#FFD700',
+                style={{
+                  color: location.pathname === item.path ? '#FFD700' : '#fff',
+                  textDecoration: 'none',
+                  fontSize: 14,
+                  fontWeight: 500,
+                  transition: 'color 0.3s',
+                }}
+                onMouseEnter={(e) => {
+                  if (location.pathname !== item.path) {
+                    e.target.style.color = '#FFD700';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (location.pathname !== item.path) {
+                    e.target.style.color = '#fff';
                   }
                 }}
               >
                 {item.name}
-              </Button>
+              </Link>
             ))}
-          </Box>
-        )}
-        
-        {isMobile && (
-          <Button
-            variant="contained"
-            component={Link}
-            to="/demo"
-            sx={{ 
-              background: 'white',
-              color: '#2196F3',
-              fontWeight: 600,
-              '&:hover': {
-                background: '#f0f0f0',
-              }
-            }}
-          >
-            Demo
-          </Button>
-        )}
-      </Toolbar>
-    </AppBar>
+          </div>
+
+          <div style={{ display: 'none', md: 'block' }}>
+            <Button
+              type="primary"
+              style={{
+                background: '#fff',
+                color: '#1677FF',
+                fontWeight: 600,
+                borderRadius: 20,
+                padding: '8px 32px',
+              }}
+              onClick={() => window.location.href = '/demo'}
+            >
+              立即体验
+            </Button>
+          </div>
+
+          <div style={{ display: 'block', md: 'none' }}>
+            <Dropdown menu={mobileMenu} trigger={['click']}>
+              <Button icon={<MenuOutlined />} size="large" style={{ color: '#fff', border: 'none', background: 'transparent' }} />
+            </Dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

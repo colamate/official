@@ -10,14 +10,14 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.1.4",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.2.1",
     "vite": "^7.3.1"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^7.3.8",
-    "@mui/material": "^7.3.8",
-    "axios": "^1.13.6",
+    "antd": "^5.22.0",
+    "clsx": "^2.1.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.13.1"
