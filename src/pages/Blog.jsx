@@ -1,7 +1,4 @@
 import React from 'react';
-import { Typography, Card, Tag, Button, Row, Col, Space, Divider } from 'antd';
-
-const { Title, Text } = Typography;
 
 const Blog = () => {
   const [activeCategory, setActiveCategory] = React.useState('全部');
@@ -43,127 +40,87 @@ const Blog = () => {
     ? blogPosts 
     : blogPosts.filter((post) => post.category === activeCategory);
 
+  const getCategoryStyle = (category) => {
+    if (category === '技术趋势') return { background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' };
+    if (category === '产品更新') return { background: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)' };
+    if (category === '最佳实践') return { background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' };
+    return { background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' };
+  };
+
   return (
-    <div style={{ padding: '80px 0' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-        <Title
-          style={{
-            marginBottom: 48,
-            fontWeight: 600,
-            textAlign: 'center',
-          }}
-        >
-          技术博客与新闻
-        </Title>
+    <div className="page-content">
+      <h1 className="page-title">技术博客与新闻</h1>
+      <p className="page-subtitle">
+        获取最新的AI开发趋势、产品更新和最佳实践
+      </p>
 
-        <div
-          style={{
-            marginBottom: 48,
-            display: 'flex',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            gap: 12,
-          }}
-        >
-          {categories.map((category, index) => (
-            <Button
-              key={index}
-              type={activeCategory === '全部' && index === 0 ? 'primary' : 'default'}
-              style={{
-                borderRadius: 20,
-                paddingHorizontal: 24,
-                fontWeight: 500,
-              }}
-              onClick={() => setActiveCategory(category)}
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
-
-        <Row gutter={32}>
-          {filteredPosts.map((post) => (
-            <Col xs={24} md={12} lg={12} key={post.id}>
-              <Card
-                hoverable
-                style={{
-                  height: '100%',
-                  border: 'none',
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
-                }}
-                bodyStyle={{ padding: '24px' }}
-              >
-                <Space align="start">
-                  <Tag
-                    color={
-                      post.category === '技术趋势'
-                        ? '#1677FF'
-                        : post.category === '产品更新'
-                        ? '#13C2C2'
-                        : post.category === '最佳实践'
-                        ? '#FA8C16'
-                        : '#52C41A'
-                    }
-                    style={{
-                      fontWeight: 600,
-                      borderRadius: 4,
-                      padding: '4px 12px',
-                    }}
-                  >
-                    {post.category}
-                  </Tag>
-                </Space>
-                <Title
-                  level={3}
-                  style={{
-                    fontWeight: 600,
-                    marginBottom: 12,
-                    color: 'rgba(0, 0, 0, 0.85)',
-                  }}
-                >
-                  {post.title}
-                </Title>
-                <Text
-                  style={{
-                    display: 'block',
-                    marginBottom: 16,
-                    color: '#666666',
-                  }}
-                >
-                  {post.excerpt}
-                </Text>
-                <Text
-                  type="secondary"
-                  style={{ fontSize: 12 }}
-                >
-                  发布日期: {post.date}
-                </Text>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-
-        {filteredPosts.length === 0 && (
-          <div style={{ textAlign: 'center', padding: 48 }}>
-            <Text type="secondary">暂无相关文章</Text>
-          </div>
-        )}
-
-        <div style={{ marginTop: 48, textAlign: 'center' }}>
-          <Button
-            type="default"
+      <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '48px' }}>
+        {categories.map((category, index) => (
+          <button
+            key={index}
+            onClick={() => setActiveCategory(category)}
             style={{
-              borderRadius: 50,
-              paddingHorizontal: 32,
-              paddingVertical: 12,
-              borderColor: '#1677FF',
-              color: '#1677FF',
-              fontWeight: 600,
+              padding: '10px 24px',
+              borderRadius: '50px',
+              fontSize: '1rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s',
+              border: 'none',
+              background: activeCategory === category ? 'var(--primary-gradient)' : 'rgba(102, 126, 234, 0.1)',
+              color: activeCategory === category ? '#fff' : '#666',
             }}
           >
-            加载更多文章
-          </Button>
+            {category}
+          </button>
+        ))}
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '24px' }}>
+        {filteredPosts.map((post) => (
+          <div key={post.id} className="feature-card" style={{ padding: '32px' }}>
+            <span style={{
+              ...getCategoryStyle(post.category),
+              color: '#fff',
+              padding: '6px 16px',
+              borderRadius: '20px',
+              fontSize: '0.875rem',
+              fontWeight: '600',
+              display: 'inline-block',
+            }}>
+              {post.category}
+            </span>
+            <h3 style={{ fontSize: '1.5rem', fontWeight: '700', margin: '16px 0', color: '#333' }}>
+              {post.title}
+            </h3>
+            <p style={{ color: '#666', lineHeight: 1.8 }}>{post.excerpt}</p>
+            <div style={{ marginTop: '16px', fontSize: '0.875rem', color: '#999' }}>
+              发布日期: {post.date}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {filteredPosts.length === 0 && (
+        <div style={{ textAlign: 'center', padding: '64px' }}>
+          <p style={{ color: '#999' }}>暂无相关文章</p>
         </div>
+      )}
+
+      <div style={{ textAlign: 'center', marginTop: '48px' }}>
+        <button style={{
+          padding: '12px 32px',
+          borderRadius: '50px',
+          fontSize: '1rem',
+          fontWeight: '600',
+          cursor: 'pointer',
+          transition: 'all 0.3s',
+          border: 'none',
+          background: 'var(--primary-gradient)',
+          color: '#fff',
+        }}>
+          加载更多文章
+        </button>
       </div>
     </div>
   );

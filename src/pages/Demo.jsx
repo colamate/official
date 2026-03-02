@@ -1,12 +1,7 @@
 import React from 'react';
-import { Typography, Tabs, Card, Input, Button, Space } from 'antd';
-import { CodeOutlined, RocketOutlined } from '@ant-design/icons';
-
-const { Title, Text } = Typography;
-const { TextArea } = Input;
 
 const Demo = () => {
-  const [activeTab, setActiveTab] = React.useState('1');
+  const [activeTab, setActiveTab] = React.useState(0);
   const [prompt, setPrompt] = React.useState('');
   const [generatedCode, setGeneratedCode] = React.useState('');
 
@@ -23,158 +18,181 @@ console.log(fibonacci(${prompt || 10}));`;
     setGeneratedCode(mockCode);
   };
 
-  const items = [
-    {
-      key: '1',
-      label: (
-        <Space>
-          <CodeOutlined />
-          AI代码生成
-        </Space>
-      ),
-      children: (
-        <Card style={{ border: 'none', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)' }}>
-          <Title level={3} style={{ marginBottom: 24, fontWeight: 600 }}>
-            AI代码生成演示
-          </Title>
-          <TextArea
-            rows={4}
-            placeholder="请输入您的需求，例如：'创建一个计算斐波那契数列的函数'"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            style={{ marginBottom: 24 }}
-          />
-          <Button
-            type="primary"
-            style={{
-              background: 'linear-gradient(135deg, #1677FF 0%, #597EF7 100%)',
-              border: 'none',
-            }}
-            onClick={handleGenerate}
-          >
-            生成代码
-          </Button>
-
-          {generatedCode && (
-            <div style={{ marginTop: 32 }}>
-              <Title
-                level={4}
-                style={{
-                  fontWeight: 600,
-                  marginBottom: 16,
-                }}
-              >
-                生成的代码：
-              </Title>
-              <Card
-                style={{
-                  padding: 16,
-                  background: '#f5f5f5',
-                  fontFamily: 'monospace',
-                  overflowX: 'auto',
-                  marginBottom: 16,
-                }}
-                bodyStyle={{ padding: 0 }}
-              >
-                <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{generatedCode}</pre>
-              </Card>
-              <Button
-                type="default"
-                onClick={() => navigator.clipboard.writeText(generatedCode)}
-              >
-                复制代码
-              </Button>
-            </div>
-          )}
-        </Card>
-      ),
-    },
-    {
-      key: '2',
-      label: (
-        <Space>
-          <RocketOutlined />
-          智能对话
-        </Space>
-      ),
-      children: (
-        <Card style={{ border: 'none', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)' }}>
-          <Title level={3} style={{ marginBottom: 24, fontWeight: 600 }}>
-            智能对话演示
-          </Title>
-          <div
-            style={{
-              height: 300,
-              border: '1px solid #d9d9d9',
-              borderRadius: 6,
-              padding: 16,
-              marginBottom: 16,
-              overflowY: 'auto',
-              background: '#fafafa',
-            }}
-          >
-            <div style={{ marginBottom: 16 }}>
-              <Text strong style={{ color: '#1677FF' }}>用户：</Text>
-              <Text style={{ display: 'block', marginLeft: 48 }}>如何优化React应用的性能？</Text>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <Text strong style={{ color: '#13C2C2' }}>ColaJS AI：</Text>
-              <Text style={{ display: 'block', marginLeft: 48 }}>
-                优化React应用性能的关键策略包括：
-                <br />
-                1. 使用React.memo避免不必要的重渲染
-                <br />
-                2. 使用useCallback和useMemo缓存函数和计算结果
-                <br />
-                3. 实现代码分割和懒加载
-                <br />
-                4. 优化列表渲染，使用虚拟滚动
-                <br />
-                5. 避免在渲染函数中创建新对象
-              </Text>
-            </div>
-          </div>
-          <Input
-            placeholder="输入您的问题..."
-            disabled
-            status="error"
-            suffix={<span style={{ color: '#FF4D4F' }}>演示模式</span>}
-          />
-          <Text type="secondary" style={{ display: 'block', marginTop: 8, fontSize: 12 }}>
-            这是一个演示，实际功能需要后端支持
-          </Text>
-        </Card>
-      ),
-    },
+  const tabs = [
+    { icon: '💻', label: 'AI代码生成' },
+    { icon: '💬', label: '智能对话' },
   ];
 
   return (
-    <div style={{ padding: '80px 0' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-        <Title
-          style={{
-            marginBottom: 48,
-            fontWeight: 600,
-            textAlign: 'center',
-          }}
-        >
-          功能演示
-        </Title>
+    <div className="page-content">
+      <h1 className="page-title">功能演示</h1>
+      <p className="page-subtitle">
+        体验ColaJS的AI全栈开发能力，包括智能代码生成、对话系统和API集成等功能。
+      </p>
 
-        <Text
-          style={{
-            display: 'block',
-            marginBottom: 48,
-            textAlign: 'center',
-            maxWidth: 600,
-            margin: '0 auto 48px auto',
-            color: '#666666',
-          }}
-        >
-          体验ColaJS的AI全栈开发能力，包括智能代码生成、对话系统和API集成等功能。
-        </Text>
+      <div style={{ background: '#fff', borderRadius: '24px', padding: '40px', boxShadow: 'var(--shadow-md)', marginBottom: '48px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '40px' }}>
+          {tabs.map((tab, index) => (
+            <button
+              key={index}
+              onClick={() => setActiveTab(index)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '16px 32px',
+                fontSize: '1.1rem',
+                fontWeight: '600',
+                background: activeTab === index ? 'var(--primary-gradient)' : 'rgba(102, 126, 234, 0.1)',
+                color: activeTab === index ? '#fff' : '#666',
+                borderRadius: '50px',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'all 0.3s',
+              }}
+            >
+              {tab.icon} {tab.label}
+            </button>
+          ))}
+        </div>
 
-        <Tabs defaultActiveKey="1" items={items} style={{ maxWidth: 800, margin: '0 auto' }} />
+        {activeTab === 0 && (
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <h2 style={{ fontSize: '1.75rem', fontWeight: '700', marginBottom: '24px', color: '#333' }}>
+              AI代码生成演示
+            </h2>
+
+            <textarea
+              rows={4}
+              placeholder="请输入您的需求，例如：'创建一个计算斐波那契数列的函数'"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '16px',
+                borderRadius: '16px',
+                border: '2px solid rgba(102, 126, 234, 0.2)',
+                fontSize: '1rem',
+                resize: 'vertical',
+                marginBottom: '24px',
+                fontFamily: '"Fira Code", "Courier New", monospace',
+              }}
+            />
+
+            <button
+              onClick={handleGenerate}
+              style={{
+                padding: '14px 40px',
+                fontSize: '1.1rem',
+                fontWeight: '700',
+                background: 'var(--primary-gradient)',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '50px',
+                cursor: 'pointer',
+                transition: 'all 0.3s',
+              }}
+            >
+              生成代码
+            </button>
+
+            {generatedCode && (
+              <div style={{ marginTop: '48px' }}>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '24px', color: '#333' }}>
+                  生成的代码：
+                </h3>
+
+                <div style={{
+                  background: 'linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%)',
+                  borderRadius: '16px',
+                  padding: '32px',
+                  fontFamily: '"Fira Code", "Courier New", monospace',
+                  color: '#e0e0e0',
+                  overflowX: 'auto',
+                  marginBottom: '24px',
+                }}>
+                  <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{generatedCode}</pre>
+                </div>
+
+                <button
+                  onClick={() => navigator.clipboard.writeText(generatedCode)}
+                  style={{
+                    padding: '12px 32px',
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    background: 'rgba(102, 126, 234, 0.1)',
+                    color: '#667eea',
+                    border: '2px solid var(--primary-gradient)',
+                    borderRadius: '50px',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s',
+                  }}
+                >
+                  复制代码
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 1 && (
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <h2 style={{ fontSize: '1.75rem', fontWeight: '700', marginBottom: '24px', color: '#333' }}>
+              智能对话演示
+            </h2>
+
+            <div style={{
+              height: '400px',
+              border: '2px solid rgba(102, 126, 234, 0.2)',
+              borderRadius: '16px',
+              padding: '24px',
+              overflowY: 'auto',
+              background: 'rgba(248, 249, 250, 0.5)',
+              marginBottom: '24px',
+            }}>
+              <div style={{ marginBottom: '24px' }}>
+                <strong style={{ color: '#667eea' }}>用户：</strong>
+                <div style={{ marginLeft: '40px', color: '#333' }}>如何优化React应用的性能？</div>
+              </div>
+              <div style={{ marginBottom: '24px' }}>
+                <strong style={{ color: '#11998e' }}>ColaJS AI：</strong>
+                <div style={{ marginLeft: '40px', color: '#333', lineHeight: 1.8 }}>
+                  优化React应用性能的关键策略包括：
+                  <br />
+                  1. 使用React.memo避免不必要的重渲染
+                  <br />
+                  2. 使用useCallback和useMemo缓存函数和计算结果
+                  <br />
+                  3. 实现代码分割和懒加载
+                  <br />
+                  4. 优化列表渲染，使用虚拟滚动
+                  <br />
+                  5. 避免在渲染函数中创建新对象
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <input
+                type="text"
+                placeholder="输入您的问题..."
+                disabled
+                style={{
+                  width: '100%',
+                  padding: '14px 20px',
+                  borderRadius: '50px',
+                  fontSize: '1rem',
+                  border: '2px solid #ff4d4f',
+                  backgroundColor: '#f5f5f5',
+                  color: '#999',
+                }}
+              />
+              <p style={{ textAlign: 'center', marginTop: '12px', fontSize: '0.875rem', color: '#ff4d4f' }}>
+                ⚠️ 这是一个演示，实际功能需要后端支持
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
